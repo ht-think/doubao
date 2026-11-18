@@ -1,6 +1,6 @@
 # doubao
 
-豆包技能仓库（私有）。当前收录：
+豆包技能仓库（公有）。当前收录：
 
 ## chenzhou-knowledge-search · 郴州知识检索
 
