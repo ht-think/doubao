@@ -1,0 +1,90 @@
+{
+  "layer": "离线条目层（技能内置兜底）",
+  "generated_at": "2026-11-18",
+  "source": "瀚天知识库对外知识单元层抽样（按专题取代表条目）",
+  "method": "流式只读抽取 → 题名＋年代/地点＋首段预览（≤200 字，句界截断）→ 剥离编号/著录/出处 → 按域分片",
+  "budget_mb": 2.0,
+  "index": {
+    "file": "kb-index.md",
+    "bytes": 4700,
+    "md5": "27ad2015df4ab6fc0174e6366e418591"
+  },
+  "shards": [
+    {
+      "file": "kb-01-hist.md",
+      "bytes": 104411,
+      "md5": "9a0f0822a96be0f9ffad21554c6508a9"
+    },
+    {
+      "file": "kb-02-geo.md",
+      "bytes": 137755,
+      "md5": "9a4fa869a0347e69c9e4dcfb8ad8921e"
+    },
+    {
+      "file": "kb-03-people.md",
+      "bytes": 98602,
+      "md5": "af1d292cea3f06aeedad55d7dc8f299d"
+    },
+    {
+      "file": "kb-04-red.md",
+      "bytes": 125957,
+      "md5": "e31ebcf00ce5a0fa7c9261d22d317bfa"
+    },
+    {
+      "file": "kb-05-party.md",
+      "bytes": 155137,
+      "md5": "5b5c877401210e92d344e89be19d6f26"
+    },
+    {
+      "file": "kb-06-econ.md",
+      "bytes": 181799,
+      "md5": "86f7b30dcc0472212a64aa0aff83bcb5"
+    },
+    {
+      "file": "kb-07-edu.md",
+      "bytes": 67868,
+      "md5": "711e3cd6acbe8738b0e167aa10cadc41"
+    },
+    {
+      "file": "kb-08-cul.md",
+      "bytes": 264946,
+      "md5": "9168c4e97474aa613644c96341d37419"
+    },
+    {
+      "file": "kb-09-custom.md",
+      "bytes": 112929,
+      "md5": "3d2c99c34c53cc26795b8fb5a35a8962"
+    },
+    {
+      "file": "kb-10-relic.md",
+      "bytes": 86698,
+      "md5": "474d346eae87add3c47d6ea7eb2079f9"
+    },
+    {
+      "file": "kb-11-infra.md",
+      "bytes": 95020,
+      "md5": "30392e714d358e0267514eea898e4279"
+    },
+    {
+      "file": "kb-12-soc.md",
+      "bytes": 135813,
+      "md5": "378b49091a2dd9a0b4d7a14bf6dd435f"
+    },
+    {
+      "file": "kb-90-ext.md",
+      "bytes": 285971,
+      "md5": "15b696eb13863239879b6a8ab77fb05c"
+    },
+    {
+      "file": "kb-91-news.md",
+      "bytes": 83688,
+      "md5": "fbe33989520d474e261af70e7c903c14"
+    },
+    {
+      "file": "kb-92-mil.md",
+      "bytes": 34840,
+      "md5": "dce005f43d0f1cc6b33cd5d300578000"
+    }
+  ],
+  "note": "无编号、无出处、无条目计数与规模数据；仅供检索通道不可用时兜底作答，不作为实时库口径。"
+}
