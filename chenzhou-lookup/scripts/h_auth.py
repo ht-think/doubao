@@ -4,11 +4,12 @@
 
 命令：
   python h_auth.py status    检查连接状态 → connected(exit 0) / disconnected(exit 1)
+                             有待确认授权码时会自动续查一次（等同 poll 一次）
   python h_auth.py login     发起设备授权：立即输出登录链接并退出（约 2 秒，不阻塞）
   python h_auth.py wait      轮询等待授权完成（供后台任务使用，最长 9.5 分钟）
                              → 已连接(0)/被拒(2)/过期或超时(3)
   python h_auth.py check     续查一次待确认授权码 → 已连接(0)/尚未授权(6)/被拒(2)/过期(3)
-  python h_auth.py logout    清除本地令牌并尽力吊销
+  python h_auth.py logout    清除本地令牌与待确认授权码，并尽力吊销
 
 令牌落盘：~/.hantian-skill/token.json（0600），含 access/refresh token 与过期时间。
 """
@@ -33,8 +34,10 @@ PENDING_PATH = os.path.join(os.path.dirname(TOKEN_PATH) or os.path.expanduser("~
 
 def _req(method, path, data=None, headers=None, timeout=15):
     url = BASE_URL + path
-    body = urllib.parse.urlencode(data).encode() if isinstance(data, dict) else (
-        json.dumps(data).encode("utf-8") if isinstance(data, dict) else data)
+    if isinstance(data, dict):
+        body = urllib.parse.urlencode(data).encode()
+    else:
+        body = data
     req = urllib.request.Request(url, data=body, method=method,
                                  headers=headers or {})
     opener = urllib.request.build_opener()
@@ -120,10 +123,35 @@ def check_remote(tok):
     return False, tok
 
 
+def _poll_pending_once():
+    """status 内置的一次授权续查：有待确认授权码时轮询一次。
+
+    返回 "connected"（已换到令牌）／"pending"（仍未授权）／None（无授权单或已作废）。
+    """
+    p = load_pending()
+    if not p:
+        return None
+    if int(time.time()) - int(p.get("started_at", 0)) > 600:
+        drop_pending()
+        return None
+    rc, tok, _ = _poll_once(p["device_code"])
+    if rc == 0:
+        save_token(tok)
+        drop_pending()
+        return "connected"
+    if rc in (2, 3):
+        drop_pending()
+        return None
+    return "pending"
+
+
 def cmd_status():
     tok = load_token()
     ok, _ = check_remote(tok)
     if ok:
+        print("connected")
+        return 0
+    if _poll_pending_once() == "connected":
         print("connected")
         return 0
     print("disconnected")
@@ -276,6 +304,7 @@ def cmd_logout():
         _req("POST", "/oauth/revoke", {"token": tok["access_token"],
                                        "client_id": CLIENT_ID})
     drop_token()
+    drop_pending()
     print("已退出登录。")
     return 0
 
