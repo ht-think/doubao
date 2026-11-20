@@ -82,6 +82,9 @@ def _call(tool, args):
             wait = 30
         print("查询过于频繁，请 %d 秒后再试。" % wait)
         return 4
+    if st == 0:
+        print("连接不上检索服务（网络不可达或超时）。")
+        return 6
     if st != 200:
         print("查询失败（服务异常，错误码 %s）。请稍后重试。" % st)
         return 6
